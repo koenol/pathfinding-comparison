@@ -3,7 +3,6 @@
 ## Overview
 This project focuses on generating randomized 2D grid-based maps and evaluating the performance of pathfinding algorithms in dynamic environments. Users can experiment with different map sizes and algorithm choices, and visualize the results using a simple interface.
 
----
 
 ## Technologies Used
 
@@ -14,7 +13,6 @@ This project focuses on generating randomized 2D grid-based maps and evaluating 
 **Supported Languages (Peer Reviews)**  
 - Python
 
----
 
 ## Pathfinding Algorithms
 
@@ -24,13 +22,11 @@ This project focuses on generating randomized 2D grid-based maps and evaluating 
 **LPA\*** (Lifelong Planning A\*)  
 - Incremental pathfinding algorithm based on A\*, optimized for dynamic or changing environments.
 
----
 
 ## Problem Statement
 - Generate dynamic, randomized 2D grid maps with a defined start and goal.  
 - Compare and evaluate the efficiency and performance of A\* and LPA\* on these maps.
 
----
 
 ## Input & Usage
 
@@ -42,7 +38,6 @@ This project focuses on generating randomized 2D grid-based maps and evaluating 
 2. Choose one or more pathfinding algorithms for evaluation.  
 3. View the calculated path and algorithm performance statistics.
 
----
 
 ## Performance
 
@@ -60,7 +55,6 @@ Let:
 - **A\*** – Initial: O(b^d), Updates: O(b^d)  
 - **LPA\*** – Initial: O(b^d), Updates: O(k log k)
 
----
 
 ## References
 - [GeeksforGeeks – A* Algorithm](https://www.geeksforgeeks.org/dsa/a-search-algorithm/)  
