@@ -1,32 +1,32 @@
 # Pathfinding Algorithms Project / Specification
 
 ## Overview
-This project focuses on generating randomized 2D grid-based maps and evaluating the performance of pathfinding algorithms in dynamic environments. Users can experiment with different map sizes and algorithm choices, and visualize the results using a simple interface.
-
+This project focuses on generating randomized 2D grid-based maps and evaluating the performance of pathfinding algorithms in static environments. Users can experiment with different map sizes and algorithm choices, and visualize the results using a simple interface. The main goal is to compare JPS and Fringe Search in terms of efficiency and speed on static 2D grids.
 
 ## Technologies Used
 
 **Programming Languages**  
-- **Python** – Implements pathfinding algorithms and map generation.  
-- **Pygame** – Provides the frontend interface for map visualization.
+- **Python 3.13** – Implements pathfinding algorithms and map generation. 
+- **pygame** – Provides the frontend interface for map visualization.
+
+Notice: pygame does not currently support Python >3.14 https://github.com/pygame/pygame/issues/4627
 
 **Supported Languages (Peer Reviews)**  
 - Python
 
+## Pathfinding Algorithms
 
 ## Pathfinding Algorithms
 
-**A\***  
-- General-purpose algorithm for finding the shortest path in a weighted graph.
+**Jump Point Search (JPS)**
+- Optimized A* for uniform-cost grids that skips intermediate nodes by evaluating only jump points. 
 
-**LPA\*** (Lifelong Planning A\*)  
-- Incremental pathfinding algorithm based on A\*, optimized for dynamic or changing environments.
-
+**Fringe Search**
+- A* variant that manages the open list as a fringe queue.
 
 ## Problem Statement
-- Generate dynamic, randomized 2D grid maps with a defined start and goal.  
-- Compare and evaluate the efficiency and performance of A\* and LPA\* on these maps.
-
+- Generate static, randomized 2D grid maps with a defined start and goal.  
+- Compare and evaluate the efficiency and performance of JPS and Fringe Search algorithms on these maps.
 
 ## Input & Usage
 
@@ -35,32 +35,27 @@ This project focuses on generating randomized 2D grid-based maps and evaluating 
 
 **Usage:**  
 1. Select the type of map to generate.  
-2. Choose one or more pathfinding algorithms for evaluation.  
+2. Choose either JPS or Fringe Search for evaluation.  
 3. View the calculated path and algorithm performance statistics.
-
 
 ## Performance
 
-Let:  
-- **N** = total number of nodes  
-- **b** = branching factor  
-- **d** = depth of shortest path  
-- **k** = nodes affected by a map change
+- N = total number of nodes  
+- b = branching factor  
+- d = depth of shortest path  
 
 **Space Complexity**  
-- A\*: O(N)  
-- LPA\*: O(N)
+- JPS: O(N)  
+- Fringe Search: O(N)
 
 **Time Complexity**  
-- **A\*** – Initial: O(b^d), Updates: O(b^d)  
-- **LPA\*** – Initial: O(b^d), Updates: O(k log k)
-
+- JPS: Best-case: O(b^d)
+- Fringe Search: Best-case: O(b^d)
 
 ## References
-- [GeeksforGeeks – A* Algorithm](https://www.geeksforgeeks.org/dsa/a-search-algorithm/)  
-- [Wikipedia – Lifelong Planning A*](https://en.wikipedia.org/wiki/Lifelong_Planning_A*)  
-- [CMU Research – Lifelong Planning A*](https://www.ri.cmu.edu/publications/lifelong-planning-a/)
+- JPS: https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/
+- Fringe Search: https://webdocs.cs.ualberta.ca/~holte/Publications/fringe.pdf
 
 ## Misc
-- I am enrolled in the Bachelor’s in Computer Science program at the University of Helsinki.
+- I am enrolled in the Bachelor’s in Computer Science program at the University of Helsinki.  
 - This specification and all documentation for the project will be written in English.

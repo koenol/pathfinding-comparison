@@ -1,6 +1,6 @@
 # pathfinding-comparison
 
-This project was developed for the University of Helsinki’s TKT20010 – Algorithms and Artificial Intelligence Project course (Spring/2026). It aims to evaluate the efficiency of an improved LPA algorithm compared to A* for pathfinding in dynamic 2D grid maps.
+This project was developed for the University of Helsinki’s TKT20010 – Algorithms and Artificial Intelligence Project course (Spring/2026). The goal is to compare the performance of JPS and Fringe Search algorithms for pathfinding on static 2D grid maps.
 
 # Documentation
 
