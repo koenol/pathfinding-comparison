@@ -16,8 +16,6 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 
 ## Pathfinding Algorithms
 
-## Pathfinding Algorithms
-
 **Jump Point Search (JPS)**
 - Optimized A* for uniform-cost grids that skips intermediate nodes by evaluating only jump points. 
 
