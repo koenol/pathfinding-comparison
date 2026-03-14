@@ -24,7 +24,6 @@ W - water (traversable, but not passable from terrain)
 
 ## Technologies Used
 
-**Programming Languages**  
 - **Python 3.13** – Implements pathfinding algorithms and map generation. 
 - **pygame** – Provides the frontend interface for map visualization.
 
@@ -69,7 +68,7 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 
 ## References
 - JPS: https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/
-- A*: https://fi.wikipedia.org/wiki/A*-algoritmi
+- A*: https://en.wikipedia.org/wiki/A*_search_algorithm
 - Warcraft 3 Maps: https://movingai.com/benchmarks/wc3maps512/index.html
 
 ## Misc
