@@ -13,7 +13,6 @@ map
 where y and x are the respective height and width of the map.
 The map data is store as an ASCII grid. The upper-left corner of the map is (0,0). The following characters are possible:
 
-```
 - passable terrain
 G - passable terrain
 @ - out of bounds
