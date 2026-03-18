@@ -22,6 +22,7 @@ class MapGenerator:
 			"S": (140, 120, 70),
 			"W": (45, 100, 180),
 		}
+		self.maps = self.load_all_maps()
 
 	def generate_map(
 		self,
@@ -46,7 +47,7 @@ class MapGenerator:
 		"""Return map dir"""
 		return os.path.join(os.path.dirname(__file__), "..", "maps")
 
-	def load_map(self, file_path: str) -> list[list[str]]:
+	def load_map(self, file_path):
 		"""Generate ASCII map"""
 		with open(file_path, "r", encoding="utf-8") as file:
 			lines = [line.rstrip("\n") for line in file]
@@ -62,11 +63,32 @@ class MapGenerator:
 
 	def load_first_map(self):
 		"""Load the initial map"""
+		if not self.maps:
+			return []
+		first_map_name = next(iter(self.maps))
+		return self.load_map_by_name(first_map_name)
+
+	def load_map_files(self):
+		"""Load map files"""
 		maps_dir = self.get_maps_dir()
 		map_files = []
 		for name in os.listdir(maps_dir):
 			if name.lower().endswith(".map"):
 				map_files.append(name)
+		return map_files
 
-		first_map = map_files[0]
-		return self.load_map(os.path.join(maps_dir, first_map))
+	def load_all_maps(self):
+		"""Load all maps"""
+		loaded_maps = {}
+		for map_name in self.load_map_files():
+			path = os.path.join(self.get_maps_dir(), map_name)
+			loaded_maps[map_name] = self.load_map(path)
+		return loaded_maps
+		
+	def list_maps(self):
+		"""Return map files"""
+		return list(self.maps.keys())
+
+	def load_map_by_name(self, map_name):
+		"""Return map by a keyword"""
+		return self.maps[map_name]
