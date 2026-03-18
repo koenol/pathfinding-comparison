@@ -63,8 +63,6 @@ class MapGenerator:
 
 	def load_first_map(self):
 		"""Load the initial map"""
-		if not self.maps:
-			return []
 		first_map_name = next(iter(self.maps))
 		return self.load_map_by_name(first_map_name)
 
