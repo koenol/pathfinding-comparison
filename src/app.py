@@ -12,6 +12,7 @@ def main():
 	map_names = map_generator.list_maps()
 	ui = UI(map_names)
 	grid = map_generator.load_first_map()
+	ui.set_grid_dimensions(len(grid[0]), len(grid))
 
 	running = True
 	while running:
@@ -19,14 +20,17 @@ def main():
 			if event.type == pygame.QUIT:
 				running = False
 
-			selected_map = ui.handle_event(event)
-			if selected_map:
-				grid = map_generator.load_map_by_name(selected_map)
+			result = ui.handle_event(event)
+			if result and result in map_names:
+				grid = map_generator.load_map_by_name(result)
+				ui.set_grid_dimensions(len(grid[0]), len(grid))
 
+		ui.set_grid_dimensions(len(grid[0]), len(grid))
 		screen.fill((25, 25, 30))
 		ui.draw_selector(screen)
 		map_generator.generate_map(screen, grid)
 		ui.draw_dropdown_list(screen)
+		ui.draw_xy(screen)
 		pygame.display.flip()
 
 	pygame.quit()
