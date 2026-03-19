@@ -75,7 +75,9 @@ class UI:
 		"""Handle mouse events"""
 		if event.type == pygame.MOUSEWHEEL:
 			mouse_pos = pygame.mouse.get_pos()
-			if self.dropdown_open and (self.dropdown_rect.collidepoint(mouse_pos) or self.get_visible_list().collidepoint(mouse_pos)):
+			if (self.dropdown_open and
+				(self.dropdown_rect.collidepoint(mouse_pos) or
+				 self.get_visible_list().collidepoint(mouse_pos))):
 				self.scroll(-event.y)
 			return None
 
@@ -83,7 +85,9 @@ class UI:
 			return None
 
 		if event.button in (4, 5):
-			if self.dropdown_open and (self.dropdown_rect.collidepoint(event.pos) or self.get_visible_list().collidepoint(event.pos)):
+			if (self.dropdown_open and
+				(self.dropdown_rect.collidepoint(event.pos) or
+				 self.get_visible_list().collidepoint(event.pos))):
 				direction = -1 if event.button == 4 else 1
 				self.scroll(direction)
 			return None
@@ -111,26 +115,26 @@ class UI:
 					self.dropdown_open = False
 					self.reset_points()
 					return map_name
-		
+
 		self.dropdown_open = False
 		return self.handle_map_click(event.pos)
-	
-	def scroll(self, dir: int):
+
+	def scroll(self, delta: int):
 		"""List scroll"""
-		self.scroll_offset = max(0, min(self.max_offset(), self.scroll_offset + dir))
-		
+		self.scroll_offset = max(0, min(self.max_offset(), self.scroll_offset + delta))
+
 	def set_grid_dimensions(self, grid_width, grid_height):
 		"""Set grid dimensions for validation"""
 		self.grid_width = grid_width
 		self.grid_height = grid_height
-		
+
 	def draw_xy(self, screen: pygame.Surface):
 		"""Select starting point and goal"""
 		start_str = f"({self.start_point[0]}, {self.start_point[1]})" if self.start_point else "-"
 		goal_str = f"({self.goal_point[0]}, {self.goal_point[1]})" if self.goal_point else "-"
 		points_text = self.font.render(f"Start: {start_str}  Goal: {goal_str}", True, self.text_color)
 		screen.blit(points_text, (10, 10))
-		
+
 		pygame.draw.rect(screen, (100, 100, 100), self.reset_button_rect)
 		reset_text = self.font.render("Reset", True, self.text_color)
 		text_rect = reset_text.get_rect(center=self.reset_button_rect.center)
@@ -148,15 +152,15 @@ class UI:
 
 		if x < 0 or y < 0:
 			return None
-		
+
 		grid_x = x // self.cell_size
 		grid_y = y // self.cell_size
-		
+
         # todo: check selected (x,y) is passable.
         # reminder: some maps include passable terrain on top edge.
 		if grid_x >= self.grid_width or grid_y >= self.grid_height:
 			return None
-		
+
 		if self.start_point is None:
 			self.start_point = (grid_x, grid_y)
 		elif self.goal_point is None:

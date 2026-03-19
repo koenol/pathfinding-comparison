@@ -79,7 +79,7 @@ class MapGenerator:
 			path = os.path.join(self.get_maps_dir(), map_name)
 			loaded_maps[map_name] = self.load_map(path)
 		return loaded_maps
-		
+
 	def list_maps(self):
 		"""Return map files"""
 		return list(self.maps.keys())

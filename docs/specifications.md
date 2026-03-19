@@ -53,13 +53,12 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 
 ## Performance
 
-- N = total number of nodes  
 - b = branching factor  
 - d = depth of shortest path  
 
 **Space Complexity**  
-- JPS: O(N)  
-- A*: O(N)
+- JPS: O(b^d)  
+- A*: O(b^d)
 
 **Time Complexity**  
 - JPS: Worst-case: O(b^d)
