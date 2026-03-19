@@ -18,14 +18,6 @@ class MapHandler:
 		elif self.goal_position is None:
 			self.goal_position = (x, y)
 
-	def set_start_position(self, x: int, y: int):
-		"""Set start (x,y)"""
-		self.start_position = (x, y)
-
-	def set_goal_position(self, x: int, y: int):
-		"""Set goal (x,y)"""
-		self.goal_position = (x, y)
-
 	def draw_selected_tiles(
 		self,
 		screen: pygame.Surface,

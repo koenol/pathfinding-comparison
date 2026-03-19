@@ -30,7 +30,12 @@ def main():
 		screen.fill((25, 25, 30))
 		ui.draw_selector(screen)
 		map_generator.generate_map(screen, grid)
-		ui.draw_selected_tiles(screen)
+		ui.map_handler.draw_selected_tiles(
+			screen,
+			offset_x=ui.map_offset_x,
+			offset_y=ui.map_offset_y,
+			cell_size=ui.cell_size,
+		)
 		ui.draw_dropdown_list(screen)
 		ui.draw_xy(screen)
 		pygame.display.flip()

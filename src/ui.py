@@ -162,12 +162,3 @@ class UI:
 
 		self.map_handler.update_selected_position(grid_x, grid_y)
 		return None
-
-	def draw_selected_tiles(self, screen: pygame.Surface):
-		"""Draw colored tiles"""
-		self.map_handler.draw_selected_tiles(
-			screen,
-			offset_x=self.map_offset_x,
-			offset_y=self.map_offset_y,
-			cell_size=self.cell_size,
-		)
