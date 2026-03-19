@@ -1,6 +1,7 @@
 """UI"""
 
 import pygame
+from map_handler import MapHandler
 
 class UI:
 	def __init__(self, map_names):
@@ -18,9 +19,8 @@ class UI:
 		self.grid_width = 0
 		self.grid_height = 0
 		self.cell_size = 1
-		self.start_point = None
-		self.goal_point = None
 		self.reset_button_rect = pygame.Rect(10, 30, 60, 20)
+		self.map_handler = MapHandler()
 
 	def draw_selector(self, screen: pygame.Surface):
 		"""Draw the map selector"""
@@ -58,8 +58,6 @@ class UI:
 	def max_offset(self):
 		"""Return max offset for dropdown menu"""
 		return max(0, len(self.map_names) - self.max_visible_options)
-
-
 
 	def get_visible_list(self):
 		"""Return current visible dropdown list"""
@@ -130,8 +128,10 @@ class UI:
 
 	def draw_xy(self, screen: pygame.Surface):
 		"""Select starting point and goal"""
-		start_str = f"({self.start_point[0]}, {self.start_point[1]})" if self.start_point else "-"
-		goal_str = f"({self.goal_point[0]}, {self.goal_point[1]})" if self.goal_point else "-"
+		start_point = self.map_handler.get_start_position()
+		goal_point = self.map_handler.get_goal_position()
+		start_str = f"({start_point[0]}, {start_point[1]})" if start_point else "-"
+		goal_str = f"({goal_point[0]}, {goal_point[1]})" if goal_point else "-"
 		points_text = self.font.render(f"Start: {start_str}  Goal: {goal_str}", True, self.text_color)
 		screen.blit(points_text, (10, 10))
 
@@ -142,8 +142,7 @@ class UI:
 
 	def reset_points(self):
 		"""Reset start and goal"""
-		self.start_point = None
-		self.goal_point = None
+		self.map_handler.reset_positions()
 
 	def handle_map_click(self, mouse_pos):
 		"""Handle position selection"""
@@ -161,8 +160,14 @@ class UI:
 		if grid_x >= self.grid_width or grid_y >= self.grid_height:
 			return None
 
-		if self.start_point is None:
-			self.start_point = (grid_x, grid_y)
-		elif self.goal_point is None:
-			self.goal_point = (grid_x, grid_y)
+		self.map_handler.update_selected_position(grid_x, grid_y)
 		return None
+
+	def draw_selected_tiles(self, screen: pygame.Surface):
+		"""Draw colored tiles"""
+		self.map_handler.draw_selected_tiles(
+			screen,
+			offset_x=self.map_offset_x,
+			offset_y=self.map_offset_y,
+			cell_size=self.cell_size,
+		)
