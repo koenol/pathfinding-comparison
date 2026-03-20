@@ -57,7 +57,7 @@ class Astar:
 		return neighbors
 
 	def move_cost(self, point1, point2):
-		"""Return movement movement cost"""
+		"""Return movement cost"""
 		dx = abs(point1[0] - point2[0])
 		dy = abs(point1[1] - point2[1])
 		return math.sqrt(2) if dx == 1 and dy == 1 else 1

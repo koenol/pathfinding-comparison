@@ -5,7 +5,7 @@ This project was developed for the University of Helsinki’s TKT20010 – Algor
 # Documentation
 
 - [Specifications](docs/specifications.md)
-- [Test Documentation](docs/week2.md) 
+- [Test Documentation](docs/test_report.md) 
 
 # Progress Report (Weekly)
 
