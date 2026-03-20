@@ -1,8 +1,8 @@
 """Simple 2D map generator"""
 
 import pygame
-from map_generator import MapGenerator
-from ui import UI
+from .map_generator import MapGenerator
+from .ui import UI
 
 def main():
 	"""Main loop"""

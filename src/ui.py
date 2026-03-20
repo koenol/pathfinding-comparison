@@ -1,7 +1,7 @@
 """UI"""
 
 import pygame
-from map_handler import MapHandler
+from .map_handler import MapHandler
 
 class UI:
 	def __init__(self, map_names):

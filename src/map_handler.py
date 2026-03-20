@@ -46,7 +46,7 @@ class MapHandler:
 			)
 			pygame.draw.rect(screen, self.goal_color, rect)
 
-	def reset_positions(self) -> None:
+	def reset_positions(self):
 		"""Reset positions"""
 		self.start_position = None
 		self.goal_position = None
