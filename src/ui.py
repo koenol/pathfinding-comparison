@@ -1,7 +1,7 @@
 """UI"""
 
 import pygame
-from .map_handler import MapHandler
+from map_handler import MapHandler
 
 class UI:
 	def __init__(self, map_names):
@@ -20,6 +20,7 @@ class UI:
 		self.grid_height = 0
 		self.cell_size = 1
 		self.reset_button_rect = pygame.Rect(10, 30, 60, 20)
+		self.run_button_rect = pygame.Rect(80, 30, 80, 20)
 		self.map_handler = MapHandler()
 
 	def draw_selector(self, screen: pygame.Surface):
@@ -94,6 +95,9 @@ class UI:
 			self.reset_points()
 			return None
 
+		if self.run_button_rect.collidepoint(event.pos):
+			return "run_astar"
+
 		if self.dropdown_rect.collidepoint(event.pos):
 			self.dropdown_open = not self.dropdown_open
 			return None
@@ -139,6 +143,11 @@ class UI:
 		reset_text = self.font.render("Reset", True, self.text_color)
 		text_rect = reset_text.get_rect(center=self.reset_button_rect.center)
 		screen.blit(reset_text, text_rect)
+
+		pygame.draw.rect(screen, (100, 100, 100), self.run_button_rect)
+		run_text = self.font.render("Run A*", True, self.text_color)
+		run_rect = run_text.get_rect(center=self.run_button_rect.center)
+		screen.blit(run_text, run_rect)
 
 	def reset_points(self):
 		"""Reset start and goal"""

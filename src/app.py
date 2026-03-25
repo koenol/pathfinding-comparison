@@ -1,8 +1,9 @@
 """Simple 2D map generator"""
 
 import pygame
-from .map_generator import MapGenerator
-from .ui import UI
+from astar import Astar
+from map_generator import MapGenerator
+from ui import UI
 
 def main():
 	"""Main loop"""
@@ -10,6 +11,7 @@ def main():
 	screen = pygame.display.set_mode((1024, 768))
 	pygame.display.set_caption("Pathfinding Algorithm Comparison")
 	map_generator = MapGenerator()
+	astar = Astar()
 	map_names = map_generator.list_maps()
 	ui = UI(map_names)
 	grid = map_generator.load_first_map()
@@ -25,6 +27,13 @@ def main():
 			if result and result in map_names:
 				grid = map_generator.load_map_by_name(result)
 				ui.set_grid_dimensions(len(grid[0]), len(grid))
+				ui.map_handler.set_path([])
+
+			if result == "run_astar":
+				start = ui.map_handler.get_start_position()
+				goal = ui.map_handler.get_goal_position()
+				path = astar.find_path(grid, start, goal)
+				ui.map_handler.set_path(path)
 
 		ui.set_grid_dimensions(len(grid[0]), len(grid))
 		screen.fill((25, 25, 30))

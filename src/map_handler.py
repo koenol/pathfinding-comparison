@@ -10,6 +10,8 @@ class MapHandler:
 		self.goal_position = None
 		self.start_color = (0, 255, 0)
 		self.goal_color = (125, 0, 125)
+		self.path = []
+		self.path_color = (255, 80, 80)
 
 	def update_selected_position(self, x: int, y: int):
 		"""Set start first & goal"""
@@ -24,8 +26,27 @@ class MapHandler:
 		offset_x: int = 10,
 		offset_y: int = 50,
 		cell_size: int = 1,
-        ):
+	):
 		"""Draw colored tiles"""
+		for x, y in self.path:
+			rect = pygame.Rect(
+				offset_x + x * cell_size,
+				offset_y + y * cell_size,
+				cell_size,
+				cell_size,
+			)
+			pygame.draw.rect(screen, self.path_color, rect)
+
+		if len(self.path) >= 2:
+			line_points = [
+				(
+					offset_x + x * cell_size + cell_size // 2,
+					offset_y + y * cell_size + cell_size // 2,
+				)
+				for x, y in self.path
+			]
+			pygame.draw.lines(screen, self.path_color, False, line_points, max(1, cell_size))
+
 		if self.start_position is not None:
 			x, y = self.start_position
 			rect = pygame.Rect(
@@ -50,6 +71,11 @@ class MapHandler:
 		"""Reset positions"""
 		self.start_position = None
 		self.goal_position = None
+		self.path = []
+
+	def set_path(self, path):
+		"""Store path"""
+		self.path = path
 
 	def get_start_position(self):
 		"""Get start coordinates"""

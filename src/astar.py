@@ -64,4 +64,29 @@ class Astar:
 
 	def find_path(self, grid, start, goal):
 		"""Start A* pathfinder"""
-		pass
+		deck = PriorityQueue()
+		deck.put((0, start))
+
+		origin = {start: None}
+		g_score = {start: 0}
+
+		while not deck.empty():
+			_, current = deck.get()
+
+			if current == goal:
+				path = []
+				while current is not None:
+					path.append(current)
+					current = origin[current]
+				path.reverse()
+				return path
+
+			for neighbor in self.get_neighbors(grid, current):
+				tentative_g_score = g_score[current] + self.move_cost(current, neighbor)
+				if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
+					origin[neighbor] = current
+					g_score[neighbor] = tentative_g_score
+					f_score = tentative_g_score + self.h(neighbor, goal)
+					deck.put((f_score, neighbor))
+
+		return []
