@@ -21,7 +21,8 @@ class UI:
 		self.cell_size = 1
 		self.reset_button_rect = pygame.Rect(10, 30, 60, 20)
 		self.run_button_rect = pygame.Rect(80, 30, 80, 20)
-		self.map_handler = MapHandler()
+		# self.jps_button_rect = pygame.Rect(170, 30, 80, 20)
+		# self.map_handler = MapHandler()
 
 	def draw_selector(self, screen: pygame.Surface):
 		"""Draw the map selector"""
@@ -98,6 +99,9 @@ class UI:
 		if self.run_button_rect.collidepoint(event.pos):
 			return "run_astar"
 
+		if self.jps_button_rect.collidepoint(event.pos):
+			return "run_jps"
+
 		if self.dropdown_rect.collidepoint(event.pos):
 			self.dropdown_open = not self.dropdown_open
 			return None
@@ -148,6 +152,11 @@ class UI:
 		run_text = self.font.render("Run A*", True, self.text_color)
 		run_rect = run_text.get_rect(center=self.run_button_rect.center)
 		screen.blit(run_text, run_rect)
+
+		pygame.draw.rect(screen, (100, 100, 100), self.jps_button_rect)
+		jps_text = self.font.render("Run JPS", True, self.text_color)
+		jps_rect = jps_text.get_rect(center=self.jps_button_rect.center)
+		screen.blit(jps_text, jps_rect)
 
 	def reset_points(self):
 		"""Reset start and goal"""

@@ -2,6 +2,7 @@
 
 import pygame
 from astar import Astar
+from jps import Jps
 from map_generator import MapGenerator
 from ui import UI
 
@@ -12,6 +13,7 @@ def main():
 	pygame.display.set_caption("Pathfinding Algorithm Comparison")
 	map_generator = MapGenerator()
 	astar = Astar()
+	jps = Jps()
 	map_names = map_generator.list_maps()
 	ui = UI(map_names)
 	grid = map_generator.load_first_map()
@@ -34,6 +36,12 @@ def main():
 				goal = ui.map_handler.get_goal_position()
 				path = astar.find_path(grid, start, goal)
 				ui.map_handler.set_path(path)
+
+			# if result == "run_jps":
+			# 	start = ui.map_handler.get_start_position()
+			# 	goal = ui.map_handler.get_goal_position()
+			# 	path = jps.find_path(grid, start, goal)
+			# 	ui.map_handler.set_path(path)
 
 		ui.set_grid_dimensions(len(grid[0]), len(grid))
 		screen.fill((25, 25, 30))
