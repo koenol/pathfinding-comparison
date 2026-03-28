@@ -1,9 +1,14 @@
 """UI"""
 
 import pygame
-from map_handler import MapHandler
+
+try:
+	from .map_handler import MapHandler
+except ImportError:
+	from map_handler import MapHandler
 
 class UI:
+	"""Class for handling UI interactions"""
 	def __init__(self, map_names):
 		self.map_names = map_names
 		self.selected_map = map_names[0]
@@ -21,8 +26,8 @@ class UI:
 		self.cell_size = 1
 		self.reset_button_rect = pygame.Rect(10, 30, 60, 20)
 		self.run_button_rect = pygame.Rect(80, 30, 80, 20)
-		# self.jps_button_rect = pygame.Rect(170, 30, 80, 20)
-		# self.map_handler = MapHandler()
+		self.jps_button_rect = pygame.Rect(170, 30, 80, 20)
+		self.map_handler = MapHandler()
 
 	def draw_selector(self, screen: pygame.Surface):
 		"""Draw the map selector"""

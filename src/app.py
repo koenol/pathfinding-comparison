@@ -35,13 +35,25 @@ def main():
 				start = ui.map_handler.get_start_position()
 				goal = ui.map_handler.get_goal_position()
 				path = astar.find_path(grid, start, goal)
+				stats = astar.stats
+				print(
+					f"A* runtime={stats['elapsed_ms']:.3f}ms "
+					f"expanded={stats['expanded_nodes']} "
+					f"path_length={len(path)}"
+				)
 				ui.map_handler.set_path(path)
 
-			# if result == "run_jps":
-			# 	start = ui.map_handler.get_start_position()
-			# 	goal = ui.map_handler.get_goal_position()
-			# 	path = jps.find_path(grid, start, goal)
-			# 	ui.map_handler.set_path(path)
+			if result == "run_jps":
+				start = ui.map_handler.get_start_position()
+				goal = ui.map_handler.get_goal_position()
+				path = jps.find_path(grid, start, goal)
+				stats = jps.stats
+				print(
+					f"JPS runtime={stats['elapsed_ms']:.3f}ms "
+					f"expanded={stats['expanded_nodes']} "
+					f"path_length={len(path)}"
+				)
+				ui.map_handler.set_path(path)
 
 		ui.set_grid_dimensions(len(grid[0]), len(grid))
 		screen.fill((25, 25, 30))
