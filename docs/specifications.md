@@ -34,6 +34,8 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 
 ## Pathfinding Algorithms
 
+Both algorithms in this project use only 4-way movement (up, down, left, right), without diagonal movement.
+
 **A\***  
 - General-purpose algorithm for finding the shortest path in a weighted graph.
 
@@ -67,6 +69,7 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 
 ## References
 - JPS: https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/
+- JPS: https://harablog.wordpress.com/2011/09/07/jump-point-search/
 - A*: https://en.wikipedia.org/wiki/A*_search_algorithm
 - Warcraft 3 Maps: https://movingai.com/benchmarks/wc3maps512/index.html
 - A* & Pygame related: https://www.youtube.com/watch?v=JtiK0DOeI4A
@@ -74,3 +77,6 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 ## Misc
 - I am enrolled in the Bachelor’s in Computer Science program at the University of Helsinki.  
 - This specification and all documentation for the project will be written in English.
+
+## AI Usage
+- LLM was consulted regarding possible JPS performance issues, because "working" JPS pruning had a significantly higher runtime than A*. 
