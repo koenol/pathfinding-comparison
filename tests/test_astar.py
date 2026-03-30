@@ -3,7 +3,7 @@ import unittest
 from src.astar import Astar
 
 class TestAstar(unittest.TestCase):
-	"""Tests for Astar class."""
+	"""Tests for Astar class"""
 	def setUp(self):
 		self.astar = Astar()
 		self.open_grid = [
@@ -24,7 +24,7 @@ class TestAstar(unittest.TestCase):
 		path = self.astar.find_path(grid, start, goal)
 		self.assertEqual(path[0], start)
 		self.assertEqual(path[-1], goal)
-		self.assertEqual(len(path), 5)
+		self.assertEqual(len(path), 3)
 		self.assertNotIn((1, 1), path)
 
 	def test_verify_path_is_same(self):
@@ -32,12 +32,10 @@ class TestAstar(unittest.TestCase):
 		path = self.astar.find_path(self.open_grid, (1, 1), (1, 1))
 		self.assertEqual(path, [(1, 1)])
 
-
-	def test_max_manhattan_distance_on_512x512_map(self):
-		"""Max(Manhattan Distance) should be equal to 1022 on 512x512 map"""
-		start = (0, 0)
-		goal = (511, 511)
-		self.assertEqual(self.astar.h(start, goal), 1022)
+	def test_pathfinder_prioritize_diagonal_movement(self):
+		"""A* should prioritize diagonal movement"""
+		path = self.astar.find_path(self.open_grid, (0, 0), (2, 2))
+		self.assertEqual(path, [(0, 0), (1, 1), (2, 2)])
 
 if __name__ == "__main__":
 	unittest.main()
