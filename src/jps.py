@@ -1,6 +1,9 @@
 """Jump Point Search (JPS) Algorithm"""
+
+import math
 import heapq
 from time import perf_counter
+
 
 class Jps:
 	"""JPS pathfinder"""
@@ -10,9 +13,14 @@ class Jps:
 		(-1, 0),
 		(0, 1),
 		(0, -1),
+		(1, 1),
+		(1, -1),
+		(-1, 1),
+		(-1, -1),
 	]
 
 	def __init__(self):
+		"""Init JPS"""
 		self.running = False
 		self.stats = {
 			"expanded_nodes": 0,
@@ -28,10 +36,12 @@ class Jps:
 		self.running = False
 
 	def h(self, point1, point2):
-		"""Calculate Manhattan distance"""
+		"""Calculate octile distance"""
 		x1, y1 = point1
 		x2, y2 = point2
-		return abs(x1 - x2) + abs(y1 - y2)
+		dx = abs(x1 - x2)
+		dy = abs(y1 - y2)
+		return (dx + dy) + (math.sqrt(2) - 2) * min(dx, dy)
 
 	def is_in_bounds(self, grid, point):
 		"""Check bounds"""
@@ -45,176 +55,155 @@ class Jps:
 		x, y = point
 		return grid[y][x] not in self.BLOCKED_TILES
 
+	def is_walkable(self, grid, point):
+		"""Check both map bounds and passability"""
+		return self.is_in_bounds(grid, point) and self.is_passable(grid, point)
 
-	def get_neighbors(self, grid, point):
+	def get_neighbors(self, grid, point, parent):
 		"""Return valid neighbors"""
 		x, y = point
-		neighbors = []
-		for dx, dy in self.DIRECTIONS:
-			next_point = (x + dx, y + dy)
-			if self.can_walk(grid, next_point):
-				neighbors.append(next_point)
-		return neighbors
+		if parent is None:
+			neighbors_deck = []
+			for dx, dy in self.DIRECTIONS:
+				next_point = (x + dx, y + dy)
+				if self.is_walkable(grid, next_point):
+					neighbors_deck.append(next_point)
+			return neighbors_deck
+		dx, dy = self.get_normalized_direction(parent, point)
+		neighbors_deck = []
+
+		if dx != 0 and dy != 0:
+			for next_point in ((x + dx, y), (x, y + dy), (x + dx, y + dy)):
+				if self.is_walkable(grid, next_point):
+					neighbors_deck.append(next_point)
+
+			if (not self.is_walkable(grid, (x - dx, y)) and
+				self.is_walkable(grid, (x - dx, y + dy))):
+				neighbors_deck.append((x - dx, y + dy))
+			if (not self.is_walkable(grid, (x, y - dy)) and
+				self.is_walkable(grid, (x + dx, y - dy))):
+				neighbors_deck.append((x + dx, y - dy))
+		elif dx != 0:
+			next_point = (x + dx, y)
+			if self.is_walkable(grid, next_point):
+				neighbors_deck.append(next_point)
+
+			if (not self.is_walkable(grid, (x, y + 1)) and
+				self.is_walkable(grid, (x + dx, y + 1))):
+				neighbors_deck.append((x + dx, y + 1))
+			if (not self.is_walkable(grid, (x, y - 1)) and
+				self.is_walkable(grid, (x + dx, y - 1))):
+				neighbors_deck.append((x + dx, y - 1))
+		else:
+			next_point = (x, y + dy)
+			if self.is_walkable(grid, next_point):
+				neighbors_deck.append(next_point)
+
+			if (not self.is_walkable(grid, (x + 1, y)) and
+				self.is_walkable(grid, (x + 1, y + dy))):
+				neighbors_deck.append((x + 1, y + dy))
+			if (not self.is_walkable(grid, (x - 1, y)) and
+				self.is_walkable(grid, (x - 1, y + dy))):
+				neighbors_deck.append((x - 1, y + dy))
+		return neighbors_deck
 
 	def move_cost(self, point1, point2):
 		"""Return movement cost """
-		return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
-	
-	def can_walk(self, grid, point):
-		"""Check node is within bounds and passable"""
-		return self.is_in_bounds(grid, point) and self.is_passable(grid, point)
+		dx = abs(point1[0] - point2[0])
+		dy = abs(point1[1] - point2[1])
+		return math.sqrt(2) if dx == 1 and dy == 1 else 1
+
+	def distance(self, point1, point2):
+		"""Return distance costs for all segments"""
+		dx = abs(point2[0] - point1[0])
+		dy = abs(point2[1] - point1[1])
+		diagonal_segment = min(dx, dy)
+		straight_segment = max(dx, dy) - diagonal_segment
+		return diagonal_segment * math.sqrt(2) + straight_segment
+
+	def get_normalized_direction(self, point1, point2):
+		"""normalized movement direction"""
+		dx = point2[0] - point1[0]
+		dy = point2[1] - point1[1]
+		return (
+			0 if dx == 0 else (1 if dx > 0 else -1),
+			0 if dy == 0 else (1 if dy > 0 else -1),
+		)
 
 	def check_forced_neighbor(self, grid, point, direction):
 		"""Check if the node has any forced neighbors"""
 		x, y = point
 		dx, dy = direction
 
+		if dx != 0 and dy != 0:
+			if (not self.is_walkable(grid, (x - dx, y)) and
+				self.is_walkable(grid, (x - dx, y + dy))):
+				return True
+			if (not self.is_walkable(grid, (x, y - dy)) and
+				self.is_walkable(grid, (x + dx, y - dy))):
+				return True
+			return False
+
 		if dx != 0:
-			up = (x, y - 1)
-			down = (x, y + 1)
-			prev_up = (x - dx, y - 1)
-			prev_down = (x - dx, y + 1)
-			if self.can_walk(grid, up) and not self.can_walk(grid, prev_up):
+			if (not self.is_walkable(grid, (x, y + 1)) and
+				self.is_walkable(grid, (x + dx, y + 1))):
 				return True
-			if self.can_walk(grid, down) and not self.can_walk(grid, prev_down):
+			if (not self.is_walkable(grid, (x, y - 1)) and
+				self.is_walkable(grid, (x + dx, y - 1))):
 				return True
-		if dy != 0:
-			left = (x - 1, y)
-			right = (x + 1, y)
-			prev_left = (x - 1, y - dy)
-			prev_right = (x + 1, y - dy)
-			if self.can_walk(grid, left) and not self.can_walk(grid, prev_left):
-				return True
-			if self.can_walk(grid, right) and not self.can_walk(grid, prev_right):
-				return True
+			return False
+
+		if (not self.is_walkable(grid, (x + 1, y)) and
+			self.is_walkable(grid, (x + 1, y + dy))):
+			return True
+		if (not self.is_walkable(grid, (x - 1, y)) and
+			self.is_walkable(grid, (x - 1, y + dy))):
+			return True
 		return False
 
-	def directions(self, previous, current):
-		dx = current[0] - previous[0]
-		dy = current[1] - previous[1]
-		if dx != 0:
-			dx = 1 if dx > 0 else -1
-		if dy != 0:
-			dy = 1 if dy > 0 else -1
-		return dx, dy
-
-	def append_dir(self, directions, direction):
-		"""Append direction"""
-		if direction not in directions:
-			directions.append(direction)
-
-	def prune_directions(self, grid, current, previous, goal):
-		"""Prune neighbors based on current travel direction."""
-		if previous is None:
-			return self.DIRECTIONS
-
-		x, y = current
-		dx, dy = self.directions(previous, current)
-		dirs_deck = []
-
-		forward = (dx, dy)
-		forward_point = (x + dx, y + dy)
-		forward_walkable = self.can_walk(grid, forward_point)
-		if forward_walkable:
-			self.append_dir(dirs_deck, forward)
-
-		if dx != 0:
-			if not forward_walkable or x == goal[0]:
-				if self.can_walk(grid, (x, y - 1)):
-					self.append_dir(dirs_deck, (0, -1))
-				if self.can_walk(grid, (x, y + 1)):
-					self.append_dir(dirs_deck, (0, 1))
-
-			up = (x, y - 1)
-			down = (x, y + 1)
-			prev_up = (x - dx, y - 1)
-			prev_down = (x - dx, y + 1)
-			if self.can_walk(grid, up) and not self.can_walk(grid, prev_up):
-				self.append_dir(dirs_deck, (0, -1))
-			if self.can_walk(grid, down) and not self.can_walk(grid, prev_down):
-				self.append_dir(dirs_deck, (0, 1))
-
-		if dy != 0:
-			if not forward_walkable or y == goal[1]:
-				if self.can_walk(grid, (x - 1, y)):
-					self.append_dir(dirs_deck, (-1, 0))
-				if self.can_walk(grid, (x + 1, y)):
-					self.append_dir(dirs_deck, (1, 0))
-
-			left = (x - 1, y)
-			right = (x + 1, y)
-			prev_left = (x - 1, y - dy)
-			prev_right = (x + 1, y - dy)
-			if self.can_walk(grid, left) and not self.can_walk(grid, prev_left):
-				self.append_dir(dirs_deck, (-1, 0))
-			if self.can_walk(grid, right) and not self.can_walk(grid, prev_right):
-				self.append_dir(dirs_deck, (1, 0))
-		return dirs_deck
-
-	def jps_jump(self, grid, start, direction, goal):
+	def jps_jump(self, grid, point, direction, goal):
 		"""Jump in set direction"""
 		dx, dy = direction
-		x, y = start
+		next_point = (point[0] + dx, point[1] + dy)
 
-		while True:
-			x += dx
-			y += dy
-			point = (x, y)
+		if not self.is_walkable(grid, next_point):
+			return None
+		if next_point == goal:
+			return next_point
+		if self.check_forced_neighbor(grid, next_point, direction):
+			return next_point
+		if dx != 0 and dy != 0:
+			if self.jps_jump(grid, next_point, (dx, 0), goal) is not None:
+				return next_point
+			if self.jps_jump(grid, next_point, (0, dy), goal) is not None:
+				return next_point
+		return self.jps_jump(grid, next_point, direction, goal)
 
-			if not self.can_walk(grid, point):
-				return None
-			if point == goal:
-				return point
+	def expand_path(self, point1, point2):
+		"""JPS segments to steps"""
+		dx, dy = self.get_normalized_direction(point1, point2)
+		current = point1
+		segment_list = [point1]
 
-			next_point = (x + dx, y + dy)
-			if not self.can_walk(grid, next_point):
-				return point
-			if self.check_forced_neighbor(grid, point, direction):
-				return point
-			if (dx != 0 and x == goal[0]) or (dy != 0 and y == goal[1]):
-				return point
+		while current != point2:
+			current = (current[0] + dx, current[1] + dy)
+			segment_list.append(current)
+		return segment_list
 
-	def check_successors(self, grid, current, previous, goal):
-		"""Check possible successors for current node"""
-		successors = []
-		for direction in self.prune_directions(grid, current, previous, goal):
-			jump_point = self.jps_jump(grid, current, direction, goal)
-			if jump_point is not None:
-				successors.append(jump_point)
-		return successors
-
-	def expand_path(self, origin, destination):
-		"""Check all intermediate points on the line"""
-		x1, y1 = origin
-		x2, y2 = destination
-		dx = 0 if x1 == x2 else (1 if x2 > x1 else -1)
-		dy = 0 if y1 == y2 else (1 if y2 > y1 else -1)
-		points = []
-		x, y = x1, y1
-		while (x, y) != (x2, y2):
-			x += dx
-			y += dy
-			points.append((x, y))
-		return points
-
-	def reconstruct_path(self, origin, start, goal):
+	def reconstruct_path(self, parents, goal):
 		"""Reconstruct JPS path"""
 		jps_deck = []
 		current = goal
 		while current is not None:
 			jps_deck.append(current)
-			current = origin[current]
+			current = parents[current]
 		jps_deck.reverse()
 
-		if not jps_deck:
-			return []
-
-		full_path = [jps_deck[0]]
-		for i in range(1, len(jps_deck)):
-			full_path.extend(self.expand_path(jps_deck[i - 1], jps_deck[i]))
-		if full_path[0] != start:
-			full_path.insert(0, start)
-		return full_path
+		path = [jps_deck[0]]
+		for index in range(1, len(jps_deck)):
+			segment = self.expand_path(jps_deck[index - 1], jps_deck[index])
+			path.extend(segment[1:])
+		return path
 
 	def find_path(self, grid, start, goal):
 		"""Start JPS pathfinder"""
@@ -233,36 +222,44 @@ class Jps:
 
 		started = perf_counter()
 		open_deck = []
-		heapq.heappush(open_deck, (self.h(start, goal), start))
-
-		came_from = {start: None}
-		g_score = {start: 0}
+		heapq.heappush(open_deck, (0.0, start))
 		expanded = 0
+
+		parents = {start: None}
+		g_score = {start: 0.0}
 
 		while open_deck:
 			_, current = heapq.heappop(open_deck)
 			expanded += 1
 
 			if current == goal:
+				path = self.reconstruct_path(parents, goal)
 				elapsed_ms = (perf_counter() - started) * 1000
 				self.update_stats(expanded, elapsed_ms)
-				return self.reconstruct_path(came_from, start, goal)
+				return path
 
-			previous = came_from[current]
-			for neighbor in self.check_successors(grid, current, previous, goal):
-				tentative_g_score = g_score[current] + self.move_cost(current, neighbor)
-				if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
-					came_from[neighbor] = current
-					g_score[neighbor] = tentative_g_score
-					f_score = tentative_g_score + self.h(neighbor, goal)
-					heapq.heappush(open_deck, (f_score, neighbor))
+			current_parent = parents[current]
+			for neighbor in self.get_neighbors(grid, current, current_parent):
+				direction = self.get_normalized_direction(current, neighbor)
+				jump_point = self.jps_jump(grid, current, direction, goal)
+
+				if jump_point is None:
+					continue
+
+				tentative_g_score = g_score[current] + self.distance(current, jump_point)
+				if (jump_point not in g_score or
+					tentative_g_score < g_score[jump_point]):
+					parents[jump_point] = current
+					g_score[jump_point] = tentative_g_score
+					f_score = tentative_g_score + self.h(jump_point, goal)
+					heapq.heappush(open_deck, (f_score, jump_point))
 
 		elapsed_ms = (perf_counter() - started) * 1000
 		self.update_stats(expanded, elapsed_ms)
 		return []
 
 	def update_stats(self, expanded_nodes, elapsed_ms):
-		"""Store stats."""
+		"""Store stats"""
 		self.stats = {
 			"expanded_nodes": expanded_nodes,
 			"elapsed_ms": elapsed_ms,
