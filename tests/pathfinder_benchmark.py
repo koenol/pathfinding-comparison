@@ -2,6 +2,7 @@
 Tool for benchmarking pathfinder algorithm.
     -n, --flag (int): how many times the test is run
     -r, --report (str): report individual comparison, options [on/off]
+    -e, --exclusion (int): exclusion criteria
 """
 import argparse
 import random
@@ -15,11 +16,13 @@ def main():
     parser = argparse.ArgumentParser(description="Pathfinder Benchmark")
     parser.add_argument("-n", "--flag", type=int, default=1)
     parser.add_argument("-r", "--report", choices=["on", "off"], default="on")
+    parser.add_argument("-e", "--exclusion", type=int, default=0)
     args = parser.parse_args()
     n = args.flag
     report = args.report
+    exclusion = args.exclusion
 
-    run_benchmark(n, report)
+    run_benchmark(n, report, exclusion)
 
 def get_random_xy(grid):
 	"""Pick a random passable point"""
@@ -40,7 +43,7 @@ def update_comparison(astar_value, jps_value, counts):
     else:
         counts["equal"] += 1
 
-def run_benchmark(n, report):
+def run_benchmark(n, report, exclusion):
     map_generator = MapGenerator()
     astar = Astar()
     jps = Jps()
@@ -48,6 +51,9 @@ def run_benchmark(n, report):
     runtime_counts = {"astar": 0, "jps": 0, "equal": 0}
     expanded_counts = {"astar": 0, "jps": 0, "equal": 0}
     path_length_counts = {"astar": 0, "jps": 0, "equal": 0}
+    astar_runtime_total = 0.0
+    jps_runtime_total = 0.0
+    excluded_runtime = 0
 
     for _ in range(n):
         map_name = random.choice(map_names)
@@ -67,8 +73,15 @@ def run_benchmark(n, report):
         jps_expanded = jps.stats["expanded_nodes"]
         astar_path_len = len(astar_path)
         jps_path_len = len(jps_path)
+        astar_runtime_total += astar_runtime
+        jps_runtime_total += jps_runtime
 
-        update_comparison(astar_runtime, jps_runtime, runtime_counts)
+        if exclusion and (
+            astar_runtime < exclusion and jps_runtime < exclusion
+        ):
+            excluded_runtime += 1
+        else:
+            update_comparison(astar_runtime, jps_runtime, runtime_counts)
         update_comparison(astar_expanded, jps_expanded, expanded_counts)
         update_comparison(astar_path_len, jps_path_len, path_length_counts)
 
@@ -76,11 +89,11 @@ def run_benchmark(n, report):
             print(
                 f"{map_name}: "
                 f"A* "
-                f"runtime={astar_runtime:.3f}ms, "
+                f"runtime={astar_runtime:.0f}ms, "
                 f"expanded_nodes={astar_expanded}, "
                 f"path_length={astar_path_len} | "
                 f"JPS "
-                f"runtime={jps_runtime:.3f}ms, "
+                f"runtime={jps_runtime:.0f}ms, "
                 f"expanded_nodes={jps_expanded}, "
                 f"path_length={jps_path_len}"
             )
@@ -103,6 +116,12 @@ def run_benchmark(n, report):
         f"A*: {path_length_counts['astar']}, "
         f"JPS: {path_length_counts['jps']}, "
         f"Equal: {path_length_counts['equal']}"
+    )
+    print(
+        "Average runtime: "
+        f"A*: {astar_runtime_total / n:.0f}ms, "
+        f"JPS: {jps_runtime_total / n:.0f}ms, "
+        f"Total: {(astar_runtime_total + jps_runtime_total) / n:.0f}ms"
     )
 
 if __name__ == '__main__':
