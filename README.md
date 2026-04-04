@@ -17,6 +17,10 @@ This project was developed for the University of Helsinki’s TKT20010 – Algor
 
 # Installation Guide
 
+Prerequisites:
+- Poetry
+- Python 3.13.x (>=3.13,<3.14)
+
 Install dependendencies
 ```
 poetry install
