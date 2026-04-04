@@ -18,7 +18,7 @@ JPS is an optimized A* for uniform grids. It scans certain directions and jumps 
 The performance optimization will be more clear to the peer-reviewer when expanded nodes are visualized in the UI.
 
 ## Further Improvements
-Note (04.04.2026): Test coverage still needs improvement. UI is currently missing two key features that are to be added later date: expanded nodes visualization and algorithm performance (only reported in terminal now). Pylint has been used since start of the project, but some of the issues have not been fixed yet. Traversed nodes should be also added to the testing and visualization as only expanded nodes are reported.
+Note (04.04.2026): Test coverage still needs improvement. UI is currently missing two key features that are to be added later date: expanded nodes visualization and algorithm performance (only reported in terminal now). Pylint has been used since start of the project, but some of the issues have not been fixed yet. 
 
 ## Sources
 - JPS: https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/
