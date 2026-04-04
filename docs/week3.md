@@ -15,4 +15,4 @@ Shorter path length: A*: 3919, JPS: 0, Equal: 6081<br>
 
 There is probably lots of edge cases where A* still performs better for a reason, e,g. very short paths, no valid path, I need to expand benchmark testing to get better understanding. At the moment I'm mainly worried about A* having shorter path length 40% of time even when JPS is expands less nodes majority of time. 
 
-Hours Spent: 18h (Tentative: 35h)
+Hours Spent: 18h (Cumulative: 35h)

@@ -34,8 +34,6 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 
 ## Pathfinding Algorithms
 
-Both algorithms in this project use only 4-way movement (up, down, left, right), without diagonal movement.
-
 **A\***  
 - General-purpose algorithm for finding the shortest path in a weighted graph.
 
