@@ -24,7 +24,7 @@ poetry run python -m tests.pathfinder_benchmark -n 10000 -r off (no exclusion cr
 Runtime faster: A*: 2555, JPS: 7445, Equal: 0<br>
 Expanded fewer nodes: A*: 0, JPS: 10000, Equal: 0<br>
 Shorter path length: A*: 0, JPS: 0, Equal: 10000<br>
-Average runtime: A*: 107ms, JPS: 47ms, Total: 154ms<br>
+Average runtime: A*: 107ms, JPS: 47ms<br>
 
 ## Pylint
 

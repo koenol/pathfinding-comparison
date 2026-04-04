@@ -121,7 +121,6 @@ def run_benchmark(n, report, exclusion):
         "Average runtime: "
         f"A*: {astar_runtime_total / n:.0f}ms, "
         f"JPS: {jps_runtime_total / n:.0f}ms, "
-        f"Total: {(astar_runtime_total + jps_runtime_total) / n:.0f}ms"
     )
 
 if __name__ == '__main__':

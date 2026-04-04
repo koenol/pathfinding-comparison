@@ -21,19 +21,10 @@ class Jps:
 
 	def __init__(self):
 		"""Init JPS"""
-		self.running = False
 		self.stats = {
 			"expanded_nodes": 0,
 			"elapsed_ms": 0.0,
 		}
-
-	def start_pathfinder(self):
-		"""Set pathfinder status to True"""
-		self.running = True
-
-	def stop_pathfinder(self):
-		"""Set pathfinder status to False"""
-		self.running = False
 
 	def h(self, point1, point2):
 		"""Calculate octile distance"""
@@ -108,13 +99,7 @@ class Jps:
 		return neighbors_deck
 
 	def move_cost(self, point1, point2):
-		"""Return movement cost """
-		dx = abs(point1[0] - point2[0])
-		dy = abs(point1[1] - point2[1])
-		return math.sqrt(2) if dx == 1 and dy == 1 else 1
-
-	def distance(self, point1, point2):
-		"""Return distance costs for all segments"""
+		"""Return move cost for all segments"""
 		dx = abs(point2[0] - point1[0])
 		dy = abs(point2[1] - point1[1])
 		diagonal_segment = min(dx, dy)
@@ -246,7 +231,7 @@ class Jps:
 				if jump_point is None:
 					continue
 
-				tentative_g_score = g_score[current] + self.distance(current, jump_point)
+				tentative_g_score = g_score[current] + self.move_cost(current, jump_point)
 				if (jump_point not in g_score or
 					tentative_g_score < g_score[jump_point]):
 					parents[jump_point] = current

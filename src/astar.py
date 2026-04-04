@@ -22,19 +22,10 @@ class Astar:
 	]
 	def __init__(self):
 		"""Init. A*"""
-		self.running = False
 		self.stats = {
 			"expanded_nodes": 0,
 			"elapsed_ms": 0.0,
 		}
-
-	def start_pathfinder(self):
-		"""Set pathfinder status to True"""
-		self.running = True
-
-	def stop_pathfinder(self):
-		"""Set pathfinder status to False"""
-		self.running = False
 
 	def h(self, point1, point2):
 		"""Calculate octile distance"""
