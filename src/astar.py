@@ -23,9 +23,12 @@ class Astar:
 	def __init__(self):
 		"""Init. A*"""
 		self.stats = {
-			"expanded_nodes": 0,
 			"elapsed_ms": 0.0,
 		}
+		self.expanded_nodes = []
+		self.scanned_nodes = []
+		self.expanded_nodes_set = set()
+		self.scanned_nodes_set = set()
 
 	def h(self, point1, point2):
 		"""Calculate octile distance"""
@@ -66,17 +69,23 @@ class Astar:
 
 	def find_path(self, grid, start, goal):
 		"""Start A* pathfinder"""
+		self.expanded_nodes = []
+		self.scanned_nodes = []
+		self.expanded_nodes_set = set()
+		self.scanned_nodes_set = set()
 		if not start or not goal:
-			self.update_stats(0, 0.0)
+			self.update_stats(0.0)
 			return []
 		if not self.is_in_bounds(grid, start) or not self.is_in_bounds(grid, goal):
-			self.update_stats(0, 0.0)
+			self.update_stats(0.0)
 			return []
 		if not self.is_passable(grid, start) or not self.is_passable(grid, goal):
-			self.update_stats(0, 0.0)
+			self.update_stats(0.0)
 			return []
 		if start == goal:
-			self.update_stats(1, 0.0)
+			self.add_expanded_node(start)
+			self.add_scanned_node(start)
+			self.update_stats(0.0)
 			return [start]
 
 		started = perf_counter()
@@ -90,6 +99,7 @@ class Astar:
 		while deck:
 			_, current = heapq.heappop(deck)
 			expanded += 1
+			self.add_expanded_node(current)
 
 			if current == goal:
 				path = []
@@ -98,10 +108,11 @@ class Astar:
 					current = origin[current]
 				path.reverse()
 				elapsed_ms = (perf_counter() - started) * 1000
-				self.update_stats(expanded, elapsed_ms)
+				self.update_stats(elapsed_ms)
 				return path
 
 			for neighbor in self.get_neighbors(grid, current):
+				self.add_scanned_node(neighbor)
 				tentative_g_score = g_score[current] + self.move_cost(current, neighbor)
 				if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
 					origin[neighbor] = current
@@ -110,12 +121,23 @@ class Astar:
 					heapq.heappush(deck, (f_score, neighbor))
 
 		elapsed_ms = (perf_counter() - started) * 1000
-		self.update_stats(expanded, elapsed_ms)
+		self.update_stats(elapsed_ms)
 		return []
 
-	def update_stats(self, expanded_nodes, elapsed_ms):
+	def update_stats(self, elapsed_ms):
 		"""Store stats"""
 		self.stats = {
-			"expanded_nodes": expanded_nodes,
 			"elapsed_ms": elapsed_ms,
 		}
+
+	def add_expanded_node(self, point):
+		"""Store expanded nodes"""
+		if point not in self.expanded_nodes_set:
+			self.expanded_nodes_set.add(point)
+			self.expanded_nodes.append(point)
+
+	def add_scanned_node(self, point):
+		"""Store scanned nodes"""
+		if point not in self.scanned_nodes_set:
+			self.scanned_nodes_set.add(point)
+			self.scanned_nodes.append(point)

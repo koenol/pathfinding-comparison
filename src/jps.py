@@ -22,9 +22,12 @@ class Jps:
 	def __init__(self):
 		"""Init JPS"""
 		self.stats = {
-			"expanded_nodes": 0,
 			"elapsed_ms": 0.0,
 		}
+		self.expanded_nodes = []
+		self.scanned_nodes = []
+		self.expanded_nodes_set = set()
+		self.scanned_nodes_set = set()
 
 	def h(self, point1, point2):
 		"""Calculate octile distance"""
@@ -153,6 +156,7 @@ class Jps:
 
 		if not self.is_walkable(grid, next_point):
 			return None
+		self.add_scanned_node(next_point)
 		if next_point == goal:
 			return next_point
 		if self.check_forced_neighbor(grid, next_point, direction):
@@ -192,17 +196,23 @@ class Jps:
 
 	def find_path(self, grid, start, goal):
 		"""Start JPS pathfinder"""
+		self.expanded_nodes = []
+		self.scanned_nodes = []
+		self.expanded_nodes_set = set()
+		self.scanned_nodes_set = set()
 		if not start or not goal:
-			self.update_stats(0, 0.0)
+			self.update_stats(0.0)
 			return []
 		if not self.is_in_bounds(grid, start) or not self.is_in_bounds(grid, goal):
-			self.update_stats(0, 0.0)
+			self.update_stats(0.0)
 			return []
 		if not self.is_passable(grid, start) or not self.is_passable(grid, goal):
-			self.update_stats(0, 0.0)
+			self.update_stats(0.0)
 			return []
 		if start == goal:
-			self.update_stats(1, 0.0)
+			self.add_expanded_node(start)
+			self.add_scanned_node(start)
+			self.update_stats(0.0)
 			return [start]
 
 		started = perf_counter()
@@ -216,15 +226,17 @@ class Jps:
 		while open_deck:
 			_, current = heapq.heappop(open_deck)
 			expanded += 1
+			self.add_expanded_node(current)
 
 			if current == goal:
 				path = self.reconstruct_path(parents, goal)
 				elapsed_ms = (perf_counter() - started) * 1000
-				self.update_stats(expanded, elapsed_ms)
+				self.update_stats(elapsed_ms)
 				return path
 
 			current_parent = parents[current]
 			for neighbor in self.get_neighbors(grid, current, current_parent):
+				self.add_scanned_node(neighbor)
 				direction = self.get_normalized_direction(current, neighbor)
 				jump_point = self.jps_jump(grid, current, direction, goal)
 
@@ -240,12 +252,23 @@ class Jps:
 					heapq.heappush(open_deck, (f_score, jump_point))
 
 		elapsed_ms = (perf_counter() - started) * 1000
-		self.update_stats(expanded, elapsed_ms)
+		self.update_stats(elapsed_ms)
 		return []
 
-	def update_stats(self, expanded_nodes, elapsed_ms):
+	def update_stats(self, elapsed_ms):
 		"""Store stats"""
 		self.stats = {
-			"expanded_nodes": expanded_nodes,
 			"elapsed_ms": elapsed_ms,
 		}
+
+	def add_expanded_node(self, point):
+		"""Store expanded nodes"""
+		if point not in self.expanded_nodes_set:
+			self.expanded_nodes_set.add(point)
+			self.expanded_nodes.append(point)
+
+	def add_scanned_node(self, point):
+		"""Store scanned nodes"""
+		if point not in self.scanned_nodes_set:
+			self.scanned_nodes_set.add(point)
+			self.scanned_nodes.append(point)

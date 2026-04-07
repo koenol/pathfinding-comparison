@@ -29,16 +29,21 @@ def main():
 			if result and result in map_names:
 				grid = map_generator.load_map_by_name(result)
 				ui.set_grid_dimensions(len(grid[0]), len(grid))
+				ui.map_handler.set_scanned_nodes([])
+				ui.map_handler.set_expanded_nodes([])
 				ui.map_handler.set_path([])
 
 			if result == "run_astar":
 				start = ui.map_handler.get_start_position()
 				goal = ui.map_handler.get_goal_position()
 				path = astar.find_path(grid, start, goal)
+				ui.map_handler.set_scanned_nodes(astar.scanned_nodes)
+				ui.map_handler.set_expanded_nodes(astar.expanded_nodes)
 				stats = astar.stats
 				print(
 					f"A* runtime={stats['elapsed_ms']:.3f}ms "
-					f"expanded={stats['expanded_nodes']} "
+					f"expanded={len(astar.expanded_nodes)} "
+					f"scanned={len(astar.scanned_nodes)} "
 					f"path_length={len(path)}"
 				)
 				ui.map_handler.set_path(path)
@@ -47,10 +52,13 @@ def main():
 				start = ui.map_handler.get_start_position()
 				goal = ui.map_handler.get_goal_position()
 				path = jps.find_path(grid, start, goal)
+				ui.map_handler.set_scanned_nodes(jps.scanned_nodes)
+				ui.map_handler.set_expanded_nodes(jps.expanded_nodes)
 				stats = jps.stats
 				print(
 					f"JPS runtime={stats['elapsed_ms']:.3f}ms "
-					f"expanded={stats['expanded_nodes']} "
+					f"expanded={len(jps.expanded_nodes)} "
+					f"scanned={len(jps.scanned_nodes)} "
 					f"path_length={len(path)}"
 				)
 				ui.map_handler.set_path(path)
