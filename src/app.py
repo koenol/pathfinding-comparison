@@ -32,6 +32,7 @@ def main():
 				ui.map_handler.set_scanned_nodes([])
 				ui.map_handler.set_expanded_nodes([])
 				ui.map_handler.set_path([])
+				ui.clear_pathfinder_stats()
 
 			if result == "run_astar":
 				start = ui.map_handler.get_start_position()
@@ -39,6 +40,12 @@ def main():
 				path = astar.find_path(grid, start, goal)
 				ui.map_handler.set_scanned_nodes(astar.scanned_nodes)
 				ui.map_handler.set_expanded_nodes(astar.expanded_nodes)
+				ui.set_pathfinder_stats(
+					astar.stats['elapsed_ms'],
+					len(astar.scanned_nodes),
+					len(astar.expanded_nodes),
+					len(path),
+				)
 				stats = astar.stats
 				print(
 					f"A* runtime={stats['elapsed_ms']:.3f}ms "
@@ -54,6 +61,12 @@ def main():
 				path = jps.find_path(grid, start, goal)
 				ui.map_handler.set_scanned_nodes(jps.scanned_nodes)
 				ui.map_handler.set_expanded_nodes(jps.expanded_nodes)
+				ui.set_pathfinder_stats(
+					jps.stats['elapsed_ms'],
+					len(jps.scanned_nodes),
+					len(jps.expanded_nodes),
+					len(path),
+				)
 				stats = jps.stats
 				print(
 					f"JPS runtime={stats['elapsed_ms']:.3f}ms "
@@ -74,6 +87,7 @@ def main():
 			cell_size=ui.cell_size,
 		)
 		ui.draw_dropdown_list(screen)
+		ui.draw_pathfinder_stats(screen)
 		ui.draw_xy(screen)
 		pygame.display.flip()
 

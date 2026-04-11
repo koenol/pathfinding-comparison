@@ -42,7 +42,7 @@ class TestAstar(unittest.TestCase):
 			[".", ".", "."],
 		]
 		self.astar.find_path(grid, (0, 0), (2, 2))
-		self.assertEqual(self.astar.stats["expanded_nodes"], 3)
+		self.assertEqual(len(self.astar.expanded_nodes), 3)
 
 	def test_blocked_path(self):
 		"""A* should return empty path and 3 expanded nodes when goal is blocked"""
@@ -53,7 +53,7 @@ class TestAstar(unittest.TestCase):
 		]
 		path = self.astar.find_path(grid, (0, 0), (2, 2))
 		self.assertEqual(path, [])
-		self.assertEqual(self.astar.stats["expanded_nodes"], 3)
+		self.assertEqual(len(self.astar.expanded_nodes), 3)
 
 	def test_verify_path_is_same(self):
 		"""If start and goal are the same the returned path should be equal to x,y coordinates"""

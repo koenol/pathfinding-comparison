@@ -50,6 +50,7 @@ def run_benchmark(n, report, exclusion):
     map_names = map_generator.list_maps()
     runtime_counts = {"astar": 0, "jps": 0, "equal": 0}
     expanded_counts = {"astar": 0, "jps": 0, "equal": 0}
+    scanned_counts = {"astar": 0, "jps": 0, "equal": 0}
     path_length_counts = {"astar": 0, "jps": 0, "equal": 0}
     astar_runtime_total = 0.0
     jps_runtime_total = 0.0
@@ -69,8 +70,10 @@ def run_benchmark(n, report, exclusion):
 
         astar_runtime = astar.stats["elapsed_ms"]
         jps_runtime = jps.stats["elapsed_ms"]
-        astar_expanded = astar.stats["expanded_nodes"]
-        jps_expanded = jps.stats["expanded_nodes"]
+        astar_expanded = len(astar.expanded_nodes)
+        jps_expanded = len(jps.expanded_nodes)
+        astar_scanned = len(astar.scanned_nodes)
+        jps_scanned = len(jps.scanned_nodes)
         astar_path_len = len(astar_path)
         jps_path_len = len(jps_path)
         astar_runtime_total += astar_runtime
@@ -83,6 +86,7 @@ def run_benchmark(n, report, exclusion):
         else:
             update_comparison(astar_runtime, jps_runtime, runtime_counts)
         update_comparison(astar_expanded, jps_expanded, expanded_counts)
+        update_comparison(astar_scanned, jps_scanned, scanned_counts)
         update_comparison(astar_path_len, jps_path_len, path_length_counts)
 
         if report == "on":
@@ -91,10 +95,12 @@ def run_benchmark(n, report, exclusion):
                 f"A* "
                 f"runtime={astar_runtime:.0f}ms, "
                 f"expanded_nodes={astar_expanded}, "
+                f"scanned_nodes={astar_scanned}, "
                 f"path_length={astar_path_len} | "
                 f"JPS "
                 f"runtime={jps_runtime:.0f}ms, "
                 f"expanded_nodes={jps_expanded}, "
+                f"scanned_nodes={jps_scanned}, "
                 f"path_length={jps_path_len}"
             )
 
@@ -110,6 +116,12 @@ def run_benchmark(n, report, exclusion):
         f"A*: {expanded_counts['astar']}, "
         f"JPS: {expanded_counts['jps']}, "
         f"Equal: {expanded_counts['equal']}"
+    )
+    print(
+        "Scanned fewer nodes: "
+        f"A*: {scanned_counts['astar']}, "
+        f"JPS: {scanned_counts['jps']}, "
+        f"Equal: {scanned_counts['equal']}"
     )
     print(
         "Shorter path length: "

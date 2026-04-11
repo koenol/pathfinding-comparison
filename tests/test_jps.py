@@ -43,7 +43,7 @@ class TestJps(unittest.TestCase):
 			[".", ".", "."],
 		]
 		self.jps.find_path(grid, (0, 0), (2, 2))
-		self.assertEqual(self.jps.stats["expanded_nodes"], 2)
+		self.assertEqual(len(self.jps.expanded_nodes), 2)
 
 	def test_blocked_path(self):
 		"""JPS should return empty path and 1 expanded nodes when goal is blocked"""
@@ -54,7 +54,7 @@ class TestJps(unittest.TestCase):
 		]
 		path = self.jps.find_path(grid, (0, 0), (2, 2))
 		self.assertEqual(path, [])
-		self.assertEqual(self.jps.stats["expanded_nodes"], 1)
+		self.assertEqual(len(self.jps.expanded_nodes), 1)
 
 	def test_verify_path_is_same(self):
 		"""If start and goal are the same the returned path should be equal to x,y coordinates"""
