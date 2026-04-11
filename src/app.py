@@ -46,13 +46,6 @@ def main():
 					len(astar.expanded_nodes),
 					len(path),
 				)
-				stats = astar.stats
-				print(
-					f"A* runtime={stats['elapsed_ms']:.3f}ms "
-					f"expanded={len(astar.expanded_nodes)} "
-					f"scanned={len(astar.scanned_nodes)} "
-					f"path_length={len(path)}"
-				)
 				ui.map_handler.set_path(path)
 
 			if result == "run_jps":
@@ -66,13 +59,6 @@ def main():
 					len(jps.scanned_nodes),
 					len(jps.expanded_nodes),
 					len(path),
-				)
-				stats = jps.stats
-				print(
-					f"JPS runtime={stats['elapsed_ms']:.3f}ms "
-					f"expanded={len(jps.expanded_nodes)} "
-					f"scanned={len(jps.scanned_nodes)} "
-					f"path_length={len(path)}"
 				)
 				ui.map_handler.set_path(path)
 

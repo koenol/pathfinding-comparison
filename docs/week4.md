@@ -10,6 +10,6 @@ Update 6.4.2026: W4 documentation now includes both W14 and W15 progress (29.3.-
 W4 Part2:
 - A* & JPS now keep track of scanned and expanded nodes. Added corresponding visualization for both cases in the UI as planned last week.
 - Added statistics to UI.
-- Main features are now implemented. Remaining two weeks will be used to improve test coverage, fix some usability issues and add more documentation. 
+- Main features are now implemented. Remaining two weeks will be used to improve test coverage, fix some code readability issues and add more documentation. 
 
 Hours Spent: 11 hours
