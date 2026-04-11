@@ -28,6 +28,10 @@ class UI:
 		self.run_button_rect = pygame.Rect(80, 30, 80, 20)
 		self.jps_button_rect = pygame.Rect(170, 30, 80, 20)
 		self.map_handler = MapHandler()
+		self.pathfinder_runtime_ms = None
+		self.pathfinder_scanned_nodes = None
+		self.pathfinder_expanded_nodes = None
+		self.pathfinder_path_length = None
 
 	def draw_selector(self, screen: pygame.Surface):
 		"""Draw the map selector"""
@@ -61,6 +65,25 @@ class UI:
 
 			option_text = self.font.render(map_name, True, self.text_color)
 			screen.blit(option_text, (option_rect.x + 8, option_rect.y + 4))
+
+	def draw_pathfinder_stats(self, screen: pygame.Surface):
+		"""Draw the latest pathfinder statistics below the map list"""
+		if self.pathfinder_runtime_ms is None:
+			return
+
+		stats = [
+			f"Runtime: {self.pathfinder_runtime_ms:.0f} ms",
+			f"Scanned Nodes: {self.pathfinder_scanned_nodes}",
+			f"Expanded Nodes: {self.pathfinder_expanded_nodes}",
+			f"Path Length: {self.pathfinder_path_length}",
+		]
+
+		base_x = 50
+		base_y = screen.get_height() - 150
+
+		for index, line in enumerate(stats):
+			text = self.font.render(line, True, self.text_color)
+			screen.blit(text, (base_x, base_y + index * self.height))
 
 	def max_offset(self):
 		"""Return max offset for dropdown menu"""
@@ -185,3 +208,17 @@ class UI:
 
 		self.map_handler.update_selected_position(grid_x, grid_y)
 		return None
+
+	def set_pathfinder_stats(self, runtime_ms, scanned_nodes, expanded_nodes, path_length):
+		"""Store pathfinder stats"""
+		self.pathfinder_runtime_ms = runtime_ms
+		self.pathfinder_scanned_nodes = scanned_nodes
+		self.pathfinder_expanded_nodes = expanded_nodes
+		self.pathfinder_path_length = path_length
+
+	def clear_pathfinder_stats(self):
+		"""Clear pathfinders atats"""
+		self.pathfinder_runtime_ms = None
+		self.pathfinder_scanned_nodes = None
+		self.pathfinder_expanded_nodes = None
+		self.pathfinder_path_length = None
