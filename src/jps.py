@@ -9,19 +9,12 @@ try:
 except ImportError:
 	from .pathfinder import Pathfinder
 
-
 class Jps(Pathfinder):
 	"""JPS pathfinder"""
 
 	def __init__(self):
 		"""Init JPS"""
-		self.stats = {
-			"elapsed_ms": 0.0,
-		}
-		self.expanded_nodes = []
-		self.scanned_nodes = []
-		self.expanded_nodes_set = set()
-		self.scanned_nodes_set = set()
+		super().__init__()
 
 	def is_walkable(self, grid, point):
 		"""Check both map bounds and passability"""
@@ -170,26 +163,10 @@ class Jps(Pathfinder):
 
 	def find_path(self, grid, start, goal):
 		"""Start JPS pathfinder"""
-		self.expanded_nodes = []
-		self.scanned_nodes = []
-		self.expanded_nodes_set = set()
-		self.scanned_nodes_set = set()
-		if not start or not goal:
-			self.update_stats(0.0)
-			return []
-		if not self.is_in_bounds(grid, start) or not self.is_in_bounds(grid, goal):
-			self.update_stats(0.0)
-			return []
-		if not self.is_passable(grid, start) or not self.is_passable(grid, goal):
-			self.update_stats(0.0)
-			return []
-		if start == goal:
-			self.add_expanded_node(start)
-			self.add_scanned_node(start)
-			self.update_stats(0.0)
-			return [start]
+		issue, started = self.new_search(grid, start, goal)
+		if issue is not None:
+			return issue
 
-		started = perf_counter()
 		open_deck = []
 		heapq.heappush(open_deck, (0.0, start))
 		expanded = 0

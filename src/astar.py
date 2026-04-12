@@ -16,13 +16,7 @@ class Astar(Pathfinder):
 	"""A* pathfinder"""
 	def __init__(self):
 		"""Init. A*"""
-		self.stats = {
-			"elapsed_ms": 0.0,
-		}
-		self.expanded_nodes = []
-		self.scanned_nodes = []
-		self.expanded_nodes_set = set()
-		self.scanned_nodes_set = set()
+		super().__init__()
 
 	def get_neighbors(self, grid, point):
 		"""Return valid neighbor tiles"""
@@ -43,26 +37,10 @@ class Astar(Pathfinder):
 
 	def find_path(self, grid, start, goal):
 		"""Start A* pathfinder"""
-		self.expanded_nodes = []
-		self.scanned_nodes = []
-		self.expanded_nodes_set = set()
-		self.scanned_nodes_set = set()
-		if not start or not goal:
-			self.update_stats(0.0)
-			return []
-		if not self.is_in_bounds(grid, start) or not self.is_in_bounds(grid, goal):
-			self.update_stats(0.0)
-			return []
-		if not self.is_passable(grid, start) or not self.is_passable(grid, goal):
-			self.update_stats(0.0)
-			return []
-		if start == goal:
-			self.add_expanded_node(start)
-			self.add_scanned_node(start)
-			self.update_stats(0.0)
-			return [start]
+		issue, started = self.new_search(grid, start, goal)
+		if issue is not None:
+			return issue
 
-		started = perf_counter()
 		deck = []
 		heapq.heappush(deck, (0, start))
 		expanded = 0
