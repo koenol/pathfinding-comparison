@@ -4,7 +4,7 @@ from time import perf_counter
 
 class Pathfinder:
 	"""Pathfinder base class"""
-	BLOCKED_TILES = {"@", "O", "T"}
+	BLOCKED_TILES = {"@", "O", "T", "W"}
 	DIRECTIONS = [
 		(1, 0),
 		(-1, 0),
