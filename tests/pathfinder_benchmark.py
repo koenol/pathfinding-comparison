@@ -10,11 +10,11 @@ from src.astar import Astar
 from src.jps import Jps
 from src.map_generator import MapGenerator
 
-BLOCKED_TILES = {"@", "O", "T"}
+BLOCKED_TILES = {"@", "O", "T", "W"}
 
 def main():
     parser = argparse.ArgumentParser(description="Pathfinder Benchmark")
-    parser.add_argument("-n", "--flag", type=int, default=1)
+    parser.add_argument("-n", "--flag", type=int, default=10)
     parser.add_argument("-r", "--report", choices=["on", "off"], default="on")
     parser.add_argument("-e", "--exclusion", type=int, default=0)
     args = parser.parse_args()
