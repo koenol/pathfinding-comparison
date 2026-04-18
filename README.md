@@ -14,6 +14,7 @@ This project was developed for the University of Helsinki’s TKT20010 – Algor
 - [Week 2 Report](docs/week2.md)
 - [Week 3 Report](docs/week3.md)
 - [Week 4 Report](docs/week4.md)
+- [Week 5 Report](docs/week5.md)
 
 # Installation Guide
 

@@ -39,5 +39,20 @@ class TestPathfinder(unittest.TestCase):
 		self.assertFalse(self.pathfinder.is_passable(self.grid, (1, 1)))
 		self.assertFalse(self.pathfinder.is_passable(self.grid, (0, 1)))
 
+	def test_invalid_get_path_search_status(self):
+		"""Test patch search status when invalid start or goal"""
+		path = self.pathfinder.get_path_search_status(self.grid, None, (1, 1))
+		self.assertEqual(path, [])
+		path = self.pathfinder.get_path_search_status(self.grid, (1, 1), None)
+		self.assertEqual(path, [])
+		path = self.pathfinder.get_path_search_status(self.grid, (-1, 0), (1, 1))
+		self.assertEqual(path, [])
+		path = self.pathfinder.get_path_search_status(self.grid, (1, 1), (3, 0))
+		self.assertEqual(path, [])
+		path = self.pathfinder.get_path_search_status(self.grid, (2, 0), (1, 1))
+		self.assertEqual(path, [])
+		path = self.pathfinder.get_path_search_status(self.grid, (1, 1), (2, 1))
+		self.assertEqual(path, [])
+
 if __name__ == "__main__":
 	unittest.main()

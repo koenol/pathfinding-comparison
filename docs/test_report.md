@@ -11,7 +11,7 @@ poetry run coverage report
 poetry run coverage html
 ```
 
-![](/static/coverage4.png)
+![](/static/coverage5.png)
 
 ## Benchmark
 
@@ -29,8 +29,19 @@ Average runtime: A*: 111ms, JPS: 52ms<br>
 
 ## Pylint
 
-Most of the issues are very minor. 
 ```
-pylint src
+************* Module src.astar
+src\astar.py:36:1: R0914: Too many local variables (16/15) (too-many-locals)
+************* Module src.jps
+src\jps.py:20:1: R0912: Too many branches (16/12) (too-many-branches)
+src\jps.py:85:1: R0911: Too many return statements (9/6) (too-many-return-statements)
+src\jps.py:161:1: R0914: Too many local variables (19/15) (too-many-locals)
+************* Module src.map_handler
+src\map_handler.py:5:0: R0902: Too many instance attributes (10/7) (too-many-instance-attributes)
+************* Module src.ui
+src\ui.py:10:0: R0902: Too many instance attributes (22/7) (too-many-instance-attributes)
+src\ui.py:102:1: R0911: Too many return statements (9/6) (too-many-return-statements)
+
+------------------------------------------------------------------
+Your code has been rated at 9.87/10 (previous run: 9.87/10, +0.00)
 ```
-Your code has been rated at 9.04/10 (previous run: 9.04/10, +0.05)
