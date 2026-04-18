@@ -3,7 +3,11 @@
 import math
 import heapq
 from time import perf_counter
-from pathfinder import Pathfinder
+
+try:
+	from .pathfinder import Pathfinder
+except ImportError:
+	from pathfinder import Pathfinder
 
 
 class Jps(Pathfinder):
