@@ -11,11 +11,11 @@ A* [source code](../src/astar.py)<br>
 <br>
 A* is most commonly used pathfinding algorithm in video games. A* checks all immediate neighbours at each step and it uses goal-aware heuristic to improve [Djikstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm). The performance of A* is usually better than Djikstra thanks to the heuristic calculation, but in small maps it can have almost same performance as Djikstra.
 
-JPS [source code](../src/jps.py)<br
+JPS [source code](../src/jps.py)<br>
 <br>
-JPS is an optimized A* for uniform grids. It scans certain directions and jumps to key selected key nodes. Nodes expansions are heavier than in A*, but total expandes nodes are often much lower than A* due to the optimization. In open maps the performance the performance of JPS is signifcant over A*, but in object dense maps that require lots of zigzag movement its advantage over A* will decrease due to the nature of the implementation.
+JPS is an optimized A* for uniform grids. It scans certain directions and jumps to key selected key nodes. Nodes expansions are heavier than in A*, but total expandes nodes are often much lower than A* due to the optimization. In open maps the performance the performance of JPS is signifcant over A*, but in object dense maps that require lots of zigzag movement its advantage over A* will decrease due to the nature of the implementation.<br>
 <br>
-A* and JPS share some functionality. Pathfinder base class source can be found here [source code](../src/astar.py)<br>
+A* and JPS share some functionality. Pathfinder base class source can be found here [source code](../src/pathfinder.py)<br>
 
 
 ## Further Improvements
