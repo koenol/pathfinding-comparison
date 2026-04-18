@@ -75,6 +75,3 @@ Notice: pygame does not currently support Python >3.14 https://github.com/pygame
 ## Misc
 - I am enrolled in the Bachelor’s in Computer Science program at the University of Helsinki.  
 - This specification and all documentation for the project will be written in English.
-
-## AI Usage
-- LLM was consulted regarding possible JPS performance issues, because "working" JPS pruning had a significantly higher runtime than A*. 

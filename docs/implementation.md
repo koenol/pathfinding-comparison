@@ -14,11 +14,12 @@ A* is most commonly used pathfinding algorithm in video games. A* checks all imm
 JPS [source code](../src/jps.py)<br
 <br>
 JPS is an optimized A* for uniform grids. It scans certain directions and jumps to key selected key nodes. Nodes expansions are heavier than in A*, but total expandes nodes are often much lower than A* due to the optimization. In open maps the performance the performance of JPS is signifcant over A*, but in object dense maps that require lots of zigzag movement its advantage over A* will decrease due to the nature of the implementation.
+<br>
+A* and JPS share some functionality. Pathfinder base class source can be found here [source code](../src/astar.py)<br>
 
-The performance optimization will be more clear to the peer-reviewer when expanded nodes are visualized in the UI.
 
 ## Further Improvements
-Note (04.04.2026): Test coverage still needs improvement. UI is currently missing two key features that are to be added later date: expanded nodes visualization and algorithm performance (only reported in terminal now). Pylint has been used since start of the project, but some of the issues have not been fixed yet. 
+- Comparison to previous runs would be a nice feature.
 
 ## Sources
 - JPS: https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/
