@@ -10,4 +10,11 @@ This is a work in progress, not much to see here yet.
 
 # Helpful Commands / Testing, coverage, etc.
 
-Nothing to see here yet.
+Run tests
+```
+poetry run invoke test
+```
+Run benchmarker using default parameters
+```
+poetry run invoke perf-test
+```

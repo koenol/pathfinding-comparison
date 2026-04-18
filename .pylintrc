@@ -1,0 +1,8 @@
+[MASTER]
+init-hook='import sys; sys.path.append("src")'
+
+[FORMAT]
+indent-string='\t'
+
+[TYPECHECK]
+ignored-modules=pygame

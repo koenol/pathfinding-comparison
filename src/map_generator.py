@@ -8,13 +8,10 @@ class MapGenerator:
 	def __init__(self):
 		self.cell_size = 1
 		self.terrain_colors = {
-			# PASSABLE TERRAIN. NO FUNC DIFFERENCE BETWEEN . AND G.
 			".": (220, 220, 220),
 			"G": (200, 210, 180),
-			# OUT OF BOUNDS
 			"@": (20, 20, 20),
 			"O": (35, 35, 35),
-			# PASSABLE IN SOME CASES, EFFECTS MAY VARY. T = TREES, S = SWAMP, W = WATER.
 			"T": (30, 100, 30),
 			"S": (140, 120, 70),
 			"W": (45, 100, 180),

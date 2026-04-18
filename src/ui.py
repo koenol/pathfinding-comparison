@@ -201,8 +201,6 @@ class UI:
 		grid_x = x // self.cell_size
 		grid_y = y // self.cell_size
 
-        # todo: check selected (x,y) is passable.
-        # reminder: some maps include passable terrain on top edge.
 		if grid_x >= self.grid_width or grid_y >= self.grid_height:
 			return None
 
