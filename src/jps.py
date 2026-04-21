@@ -116,21 +116,37 @@ class Jps(Pathfinder):
 	def jps_jump(self, grid, point, direction, goal):
 		"""Jump in set direction"""
 		dx, dy = direction
-		next_point = (point[0] + dx, point[1] + dy)
+		current = point
+		while True:
+			next_point = (current[0] + dx, current[1] + dy)
+			if not self.is_walkable(grid, next_point):
+				return None
+			self.add_scanned_node(next_point)
+			if next_point == goal:
+				return next_point
+			if self.check_forced_neighbor(grid, next_point, direction):
+				return next_point
+			if dx != 0 and dy != 0:
+				if self.scan_straight_line(grid, next_point, (dx, 0), goal):
+					return next_point
+				if self.scan_straight_line(grid, next_point, (0, dy), goal):
+					return next_point
+			current = next_point
 
-		if not self.is_walkable(grid, next_point):
-			return None
-		self.add_scanned_node(next_point)
-		if next_point == goal:
-			return next_point
-		if self.check_forced_neighbor(grid, next_point, direction):
-			return next_point
-		if dx != 0 and dy != 0:
-			if self.jps_jump(grid, next_point, (dx, 0), goal) is not None:
+	def scan_straight_line(self, grid, start, direction, goal):
+		"""Scan straight direction"""
+		current = start
+		x, y = direction
+		while True:
+			next_point = (current[0] + x, current[1] + y)
+			if not self.is_walkable(grid, next_point):
+				return None
+			self.add_scanned_node(next_point)
+			if next_point == goal:
 				return next_point
-			if self.jps_jump(grid, next_point, (0, dy), goal) is not None:
+			if self.check_forced_neighbor(grid, next_point, (x, y)):
 				return next_point
-		return self.jps_jump(grid, next_point, direction, goal)
+			current = next_point
 
 	def expand_path(self, point1, point2):
 		"""JPS segments to steps"""
