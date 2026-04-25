@@ -1,8 +1,6 @@
 # Test Documentation
 
-## W5 Coverage
-
-Unit tests need more attention next week.
+## W6 Coverage
 
 ```
 poetry run pytest tests -q
@@ -11,7 +9,7 @@ poetry run coverage report
 poetry run coverage html
 ```
 
-![](/static/coverage5.png)
+![](/static/coverage6.png)
 
 ## Benchmark
 
@@ -21,11 +19,11 @@ Benchmark tool for pathfinder comparison is automated tool that lets user compar
 poetry run python -m tests.pathfinder_benchmark -n 10000 -r off
 ```
 <b>Summary:</b><br>
-Runtime faster: A*: 2523, JPS: 7477, Equal: 0<br>
+Runtime faster: A*: 2330, JPS: 7670, Equal: 0<br>
 Expanded fewer nodes: A*: 0, JPS: 9999, Equal: 1<br>
-Scanned fewer nodes: A*: 9715, JPS: 205, Equal: 80<br>
+Scanned fewer nodes: A*: 9996, JPS: 4, Equal: 0<br>
 Shorter path length: A*: 0, JPS: 0, Equal: 10000<br>
-Average runtime: A*: 111ms, JPS: 52ms<br>
+Average runtime: A*: 116ms, JPS: 35ms<br>
 
 ## Pylint
 
