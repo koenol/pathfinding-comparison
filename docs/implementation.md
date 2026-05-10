@@ -19,7 +19,7 @@ A* and JPS share some functionality. Pathfinder base class source can be found h
 
 
 ## Further Improvements
-- Comparison to previous runs would be a nice feature.
+- Test coverage needs improvement
 
 ## Sources
 - JPS: https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/

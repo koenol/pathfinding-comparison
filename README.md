@@ -6,7 +6,8 @@ This project was developed for the University of Helsinki’s TKT20010 – Algor
 
 - [Specifications](docs/specifications.md)
 - [Test Documentation](docs/test_report.md) 
-- [Implementation](docs/implementation.md)
+- [Implementation](docs/implementation.md)¨
+- [User Manual](docs/user_manual.md)
 
 # Progress Report (Weekly)
 

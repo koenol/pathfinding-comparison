@@ -1,7 +1,5 @@
 # User Manual
 
-This is a work in progress, not much to see here yet. 
-
 1. Choose a map from the dropdown menu
 2. Select start (x,y) and goal (x,y) positions
 3. Choose which pathfinding algorithm to run (A* vs JPS)
